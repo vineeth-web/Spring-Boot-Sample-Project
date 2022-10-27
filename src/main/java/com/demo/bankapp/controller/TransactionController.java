@@ -80,4 +80,19 @@ public class TransactionController {
 		return response;
 	}
 
+	@PostMapping("/find/all")
+	public FindAllTransactionsByUserResponse findAlUsuerss(@RequestBody FindAllTransactionsByUserRequest request) {
+
+		if (request.getUsername() == null || request.getUsername().equals("")) {
+			throw new BadRequestException(Constants.MESSAGE_INVALIDUSERNAME);
+		}
+
+		User user = userService.findByUserName(request.getUsername());
+		List<Transaction> transactionList = transactionService.findAllByUserId(user.getId());
+
+		FindAllTransactionsByUserResponse response = new FindAllTransactionsByUserResponse();
+		response.setTransactionList(transactionList);
+		return response;
+	}
+
 }
